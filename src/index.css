@@ -1,3 +1,6 @@
+/* Custom fonts from google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 @import 'tailwindcss';
 
 /* Custom theme */
@@ -5,8 +8,16 @@
   --color-primary: #3b7d8c;
   --color-primary-light: #4a93a3;
   --color-primary-dark: #2d626e;
-  --color-secondary: #152F47;
+  --color-secondary: #152f47;
   --color-secondary-light: #1f4164;
   --color-secondary-dark: #0e1d2e;
-  --color-background: #FAFAFA;
+  --color-background: #fafafa;
+}
+
+/* Custom base styles */
+@layer base {
+  body {
+    @apply bg-background text-secondary;
+    font-family: 'Roboto', sans-serif;
+  }
 }
