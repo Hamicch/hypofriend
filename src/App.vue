@@ -1,5 +1,7 @@
 <!-- HelloWorld.vue -->
 
 <template>
-  <p>Hello there!</p>
+  <p class="text-3xl font-bold text-primary bg-background">Hello there!</p>
 </template>
+
+
