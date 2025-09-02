@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import Card from '@/components/ui/card/Card.vue'
 import InstantResultPanel from '@/components/ResultPanel.vue'
-import { formatDisplay } from '@/composables/useFormatters'
+import { formatCurrency, formatPercentage } from '@/lib/formatters'
 import CalculatorForm from '@/components/CalculatorForm.vue'
 import RatesTable from '@/components/RatesTable.vue'
 
-const impliedLoan = formatDisplay(264202, 'currency')
-const loanToValue = formatDisplay(80, 'percentage')
+const impliedLoan = ref(formatCurrency(264202))
+const loanToValue = ref(formatPercentage(80))
 </script>
 
 <template>
