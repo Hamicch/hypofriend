@@ -23,8 +23,8 @@ export function useInstantEstimates(
   propertyPrice: Ref<number>,
   totalSavings: Ref<number>,
   hasBroker: Ref<boolean>,
-  cityTaxRate = 0.06,    // TODO: Replace with GraphQL when region is added
-  brokerRate = 0.032     // TODO: Replace with GraphQL + hasBroker toggle
+  cityTaxRate = 0.06, // TODO: Replace with GraphQL when region is added
+  brokerRate = 0.032, // TODO: Replace with GraphQL + hasBroker toggle
 ) {
   /**
    * Calculates notary costs based on property price
@@ -56,9 +56,7 @@ export function useInstantEstimates(
   /**
    * Total additional costs (notary + stamp duty + broker)
    */
-  const totalCost = computed(() =>
-    notaryCosts.value + stampDuty.value + brokerCosts.value
-  )
+  const totalCost = computed(() => notaryCosts.value + stampDuty.value + brokerCosts.value)
 
   /**
    * Calculates the implied loan amount needed
@@ -86,6 +84,6 @@ export function useInstantEstimates(
     brokerCosts,
     totalCost,
     impliedLoan,
-    loanToValue
+    loanToValue,
   }
 }

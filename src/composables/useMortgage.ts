@@ -1,12 +1,12 @@
-import { computed } from "vue";
-import { useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
-import { mortgageFormSchema, type MortgageFormValues } from "@/types/mortgage";
+import { computed } from 'vue'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import { mortgageFormSchema, type MortgageFormValues } from '@/types/mortgage'
 
 type Options = {
-  initial?: Partial<MortgageFormValues>;
-  onSubmit?: (values: MortgageFormValues) => Promise<void> | void;
-};
+  initial?: Partial<MortgageFormValues>
+  onSubmit?: (values: MortgageFormValues) => Promise<void> | void
+}
 
 export function useMortgage(options: Options = {}) {
   const form = useForm<MortgageFormValues>({
@@ -19,13 +19,13 @@ export function useMortgage(options: Options = {}) {
       ...(options.initial ?? {}),
     },
     validateOnMount: false,
-  });
+  })
 
-  const canSubmit = computed(() => form.meta.value.valid && !form.isSubmitting.value);
+  const canSubmit = computed(() => form.meta.value.valid && !form.isSubmitting.value)
 
   const submit = form.handleSubmit(async (values) => {
-    await options.onSubmit?.(values);
-  });
+    await options.onSubmit?.(values)
+  })
 
-  return { form, canSubmit, submit };
+  return { form, canSubmit, submit }
 }

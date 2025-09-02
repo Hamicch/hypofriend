@@ -8,7 +8,7 @@ import { sanitizeNumericInput, safeNumber } from '@/lib/input-utils'
  */
 export function useFormattedInput(
   modelValue: Ref<string | number | undefined>,
-  formatOnBlur = false
+  formatOnBlur = false,
 ) {
   const isFocused = ref(false)
 
@@ -65,6 +65,6 @@ export function useFormattedInput(
     displayValue,
     handleFocus,
     handleBlur,
-    handleInput
+    handleInput,
   }
 }

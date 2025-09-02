@@ -17,7 +17,15 @@ import { CurrencyInput } from '@/components/ui/input'
 
 import { useMortgage } from '@/composables/useMortgage'
 
-const { form, canSubmit, submit } = useMortgage()
+const emit = defineEmits<{
+  (e: 'submit', payload: { propertyPrice: number; repayment: number }): void
+}>()
+
+const { form, canSubmit, submit } = useMortgage({
+  onSubmit: (values) => {
+    emit('submit', { propertyPrice: values.propertyPrice, repayment: values.repayment })
+  },
+})
 
 const propertyPrice = ref(0)
 const totalSavings = ref(0)
@@ -33,7 +41,7 @@ defineExpose({
   form,
   propertyPrice,
   totalSavings,
-  hasBroker
+  hasBroker,
 })
 </script>
 
@@ -45,8 +53,11 @@ defineExpose({
       <FieldSet field-name="realEstateCommission" label="Real estate commission">
         <template #control="{ componentField }">
           <FormControl>
-            <RadioGroup class="flex items-center space-x-6" :model-value="componentField.modelValue ? 'yes' : 'no'"
-              @update:model-value="val => componentField['onUpdate:modelValue']?.(val === 'yes')">
+            <RadioGroup
+              class="flex items-center space-x-6"
+              :model-value="componentField.modelValue ? 'yes' : 'no'"
+              @update:model-value="(val) => componentField['onUpdate:modelValue']?.(val === 'yes')"
+            >
               <div class="flex items-center gap-2">
                 <RadioGroupItem id="commission-yes" value="yes" />
                 <FormLabel for="commission-yes">Yes</FormLabel>
@@ -64,7 +75,12 @@ defineExpose({
       <FieldSet field-name="propertyPrice" label="Property purchase price">
         <template #control="{ componentField }">
           <FormControl>
-            <CurrencyInput required inputmode="numeric" placeholder="320000" v-bind="componentField" />
+            <CurrencyInput
+              required
+              inputmode="numeric"
+              placeholder="320000"
+              v-bind="componentField"
+            />
           </FormControl>
         </template>
       </FieldSet>
@@ -82,9 +98,13 @@ defineExpose({
       <FieldSet field-name="repayment" label="Annual repayment rate (%)">
         <template #control="{ componentField }">
           <FormControl>
-            <NumberField :model-value="Number(componentField.modelValue) || 0"
-              @update:model-value="(value) => componentField['onUpdate:modelValue']?.(value)" :min="1" :max="100"
-              :step="0.1">
+            <NumberField
+              :model-value="Number(componentField.modelValue) || 0"
+              @update:model-value="(value) => componentField['onUpdate:modelValue']?.(value)"
+              :min="1"
+              :max="100"
+              :step="0.1"
+            >
               <NumberFieldContent>
                 <NumberFieldDecrement />
                 <NumberFieldInput />
@@ -96,7 +116,9 @@ defineExpose({
       </FieldSet>
 
       <div class="flex justify-end w-full pt-8">
-        <Button class="w-full sm:w-fit" size="lg" type="submit" :disabled="!canSubmit">Calculate</Button>
+        <Button class="w-full sm:w-fit" size="lg" type="submit" :disabled="!canSubmit"
+          >Calculate</Button
+        >
       </div>
     </form>
   </Card>
