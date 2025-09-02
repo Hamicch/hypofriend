@@ -1,5 +1,7 @@
-<!-- HelloWorld.vue -->
+<script setup lang="ts">
+import MortgageCalculator from './pages/MortgageCalculator.vue'
+</script>
 
 <template>
-  <p>Hello there!</p>
+  <MortgageCalculator />
 </template>
