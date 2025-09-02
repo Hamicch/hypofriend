@@ -1,16 +1,20 @@
 <template>
   <Card>
-    <div class=" flex flex-col gap-2 p-4 sm:p-5">
+    <div class="flex flex-col gap-2">
       <p class="text-base">{{ title }}</p>
-      <p class="text-3xl font-bold">
-        {{calculatedValue }}
+      <EmptyState v-if="!calculatedValue">
+        Fill the form to get the result
+      </EmptyState>
+      <p class="text-3xl font-bold" v-else>
+        {{ calculatedValue }}
       </p>
     </div>
   </Card>
 </template>
 
 <script setup lang="ts">
-import Card from '@/components/Card.vue'
+import Card from '@/components/ui/card/Card.vue'
+import EmptyState from '@/components/EmptyState.vue'
 
 interface ResultPanelProps {
   title: string

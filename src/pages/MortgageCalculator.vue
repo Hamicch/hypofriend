@@ -1,37 +1,34 @@
 <script setup lang="ts">
-import Card from '@/components/Card.vue'
-import ResultPanel from '@/components/ResultPanel.vue'
+import Card from '@/components/ui/card/Card.vue'
+import InstantResultPanel from '@/components/ResultPanel.vue'
 import { formatDisplay } from '@/composables/useFormatters'
+import CalculatorForm from '@/components/CalculatorForm.vue'
+import RatesTable from '@/components/RatesTable.vue'
 
 const impliedLoan = formatDisplay(264202, 'currency')
 const loanToValue = formatDisplay(80, 'percentage')
 </script>
 
 <template>
-  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 border-2 border-blue-500">
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 mt-4">
     <div class="grid grid-cols-1 lg:grid-cols-6 gap-6 items-start">
-      <section aria-labelledby="calc-title" class="space-y-6 lg:col-span-6">
+      <section aria-labelledby="calc-title" class="space-y-6 lg:col-span-3">
         <h2 id="calc-title" class="sr-only">Mortgage Calculator</h2>
-        <Card>
-          <div class="p-4 sm:p-6 min-h-24">
-            <p class="text-xl font-semibold">Mortgage Calculator</p>
-          </div>
-        </Card>
+        <CalculatorForm :propertyPrice="264202" :totalSavings="100000" :repayment="5" />
       </section>
 
-      <!-- Right column: Results stack (top to bottom) -->
-      <section aria-labelledby="results-title" class="lg:col-span-6">
+      <section aria-labelledby="results-title" class="lg:col-span-3">
         <h2 id="results-title" class="sr-only">Results</h2>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ResultPanel title="Implied Loan" :calculatedValue="impliedLoan" />
+          <InstantResultPanel title="Implied Loan" :calculatedValue="impliedLoan" />
 
-          <ResultPanel title="Loan to value" :calculatedValue="loanToValue" />
+          <InstantResultPanel title="Loan to value" :calculatedValue="loanToValue" />
 
-          <Card class="min-h-24 lg:col-span-2">
-            <div class="p-4 sm:p-6">
-              <p class="text-xl font-semibold">Rate Table</p>
-            </div>
+          <Card class="min-h-24 max-w-full lg:col-span-2 flex-1">
+            <h3 class="text-md font-semibold">Rates Table
+            </h3>
+            <RatesTable />
           </Card>
         </div>
       </section>
