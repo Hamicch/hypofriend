@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue'
+
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { FormControl } from '@/components/ui/form'
+import { FormControl, FormLabel } from '@/components/ui/form'
 import {
   NumberField,
   NumberFieldInput,
@@ -9,14 +11,30 @@ import {
   NumberFieldDecrement,
   NumberFieldIncrement,
 } from '@/components/ui/number-field'
-import FieldSet from '@/components/FieldSet.vue'
+import { FieldSet } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Input } from '@/components/ui/input'
+import { CurrencyInput } from '@/components/ui/input'
 
 import { useMortgage } from '@/composables/useMortgage'
 
 const { form, canSubmit, submit } = useMortgage()
 
+const propertyPrice = ref(0)
+const totalSavings = ref(0)
+const hasBroker = ref(true)
+
+watchEffect(() => {
+  propertyPrice.value = form.values.propertyPrice || 0
+  totalSavings.value = form.values.totalSavings || 0
+  hasBroker.value = form.values.realEstateCommission ?? true
+})
+
+defineExpose({
+  form,
+  propertyPrice,
+  totalSavings,
+  hasBroker
+})
 </script>
 
 <template>
@@ -31,11 +49,11 @@ const { form, canSubmit, submit } = useMortgage()
               @update:model-value="val => componentField['onUpdate:modelValue']?.(val === 'yes')">
               <div class="flex items-center gap-2">
                 <RadioGroupItem id="commission-yes" value="yes" />
-                <Label for="commission-yes">Yes</Label>
+                <FormLabel for="commission-yes">Yes</FormLabel>
               </div>
               <div class="flex items-center gap-2">
                 <RadioGroupItem id="commission-no" value="no" />
-                <Label for="commission-no">No</Label>
+                <FormLabel for="commission-no">No</FormLabel>
               </div>
             </RadioGroup>
           </FormControl>
@@ -46,7 +64,7 @@ const { form, canSubmit, submit } = useMortgage()
       <FieldSet field-name="propertyPrice" label="Property purchase price">
         <template #control="{ componentField }">
           <FormControl>
-            <Input required inputmode="numeric" placeholder="320000" v-bind="componentField" />
+            <CurrencyInput required inputmode="numeric" placeholder="320000" v-bind="componentField" />
           </FormControl>
         </template>
       </FieldSet>
@@ -55,7 +73,7 @@ const { form, canSubmit, submit } = useMortgage()
       <FieldSet field-name="totalSavings" label="Total savings">
         <template #control="{ componentField }">
           <FormControl>
-            <Input v-bind="componentField" />
+            <CurrencyInput v-bind="componentField" />
           </FormControl>
         </template>
       </FieldSet>
@@ -64,7 +82,9 @@ const { form, canSubmit, submit } = useMortgage()
       <FieldSet field-name="repayment" label="Annual repayment rate (%)">
         <template #control="{ componentField }">
           <FormControl>
-            <NumberField v-bind="componentField" :min="1" :max="100" :step="0.1">
+            <NumberField :model-value="Number(componentField.modelValue) || 0"
+              @update:model-value="(value) => componentField['onUpdate:modelValue']?.(value)" :min="1" :max="100"
+              :step="0.1">
               <NumberFieldContent>
                 <NumberFieldDecrement />
                 <NumberFieldInput />

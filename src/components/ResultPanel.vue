@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import Card from '@/components/ui/card/Card.vue'
+import { Card } from '@/components/ui/card'
 import EmptyState from '@/components/EmptyState.vue'
 
 interface ResultPanelProps {

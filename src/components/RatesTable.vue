@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { formatCurrency, formatPercentage } from '@/lib/formatters'
+import { formatDisplay } from '@/lib/formatters'
 import EmptyState from '@/components/EmptyState.vue'
 
 interface RateData {
@@ -18,7 +18,7 @@ interface RateData {
 }
 
 const ratesData: RateData[] = [
-  { fixationLength: '5 Years', monthlyRate: 568, interestRate: 0.50 },
+  { fixationLength: '5 Years', monthlyRate: 1568, interestRate: 0.50 },
   { fixationLength: '10 Years', monthlyRate: 583, interestRate: 0.65 },
   { fixationLength: '15 Years', monthlyRate: 656, interestRate: 0.98 },
   { fixationLength: '20 Years', monthlyRate: 718, interestRate: 1.20 },
@@ -50,8 +50,8 @@ const sortedRates = computed(() => ratesData.sort((a, b) => a.interestRate - b.i
         <TableCell class="font-medium">
           {{ rate.fixationLength }}
         </TableCell>
-        <TableCell>{{ formatCurrency(rate.monthlyRate) }}</TableCell>
-        <TableCell>{{ formatPercentage(rate.interestRate) }}</TableCell>
+        <TableCell>{{ formatDisplay(rate.monthlyRate, 'currency') }}</TableCell>
+        <TableCell>{{ formatDisplay(rate.interestRate, 'percentage') }}</TableCell>
       </TableRow>
     </TableBody>
   </Table>

@@ -13,8 +13,8 @@ export function useMortgage(options: Options = {}) {
     validationSchema: toTypedSchema(mortgageFormSchema),
     initialValues: {
       realEstateCommission: true,
-      propertyPrice: 0,
-      totalSavings: 0,
+      propertyPrice: undefined,
+      totalSavings: undefined,
       repayment: 1,
       ...(options.initial ?? {}),
     },
