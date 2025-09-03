@@ -1,4 +1,3 @@
-// src/lib/graphql.ts
 export type GQLRequest = {
   query: string
   variables?: Record<string, unknown>

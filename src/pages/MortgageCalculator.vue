@@ -57,7 +57,7 @@ function onFormSubmit(values: { propertyPrice: number; repayment: number }) {
           <InstantResultPanel title="Loan to value" :calculatedValue="loanToValueFormatted" />
 
           <Card class="min-h-24 max-w-full lg:col-span-2 flex-1">
-            <h3 class="text-md font-semibold">Rates Table</h3>
+            <h3 class="text-md font-semibold">Rates</h3>
             <RatesTable :rows="rows" :loading="loading" :error="error" />
           </Card>
         </div>
