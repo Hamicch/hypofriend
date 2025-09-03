@@ -18,7 +18,11 @@ const region = () => calcRef.value?.region ?? 'berlin'
 const hasBrokerRef = computed(() => calcRef.value?.hasBroker ?? true)
 const newProperty = () => calcRef.value?.newProperty ?? false
 
-const { tax, loading: taxLoading, error: taxError } = useTaxRates({
+const {
+  tax,
+  loading: taxLoading,
+  error: taxError,
+} = useTaxRates({
   region,
   hasBroker: () => hasBrokerRef.value,
   newProperty,

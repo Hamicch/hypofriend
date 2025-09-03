@@ -34,9 +34,7 @@ const sortedRates = computed(() => props.rows ?? [])
     <!-- Table body -->
     <TableBody>
       <TableRow v-for="rate in sortedRates" :key="rate.yearsFixed">
-        <TableCell class="font-medium">
-          {{ rate.yearsFixed }} Years
-        </TableCell>
+        <TableCell class="font-medium"> {{ rate.yearsFixed }} Years </TableCell>
         <TableCell>{{ formatDisplay(rate.monthlyRate, 'currency') }}</TableCell>
         <TableCell>{{ formatDisplay(rate.borrowingRate, 'percentage') }}</TableCell>
       </TableRow>

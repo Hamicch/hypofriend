@@ -32,14 +32,17 @@ export function useTaxRates(params: {
     try {
       const city = await gqlFetch<{ calculateCityTax: { tax: number } }>(
         { query: M_CITY_TAX, variables: { region: params.region() } },
-        ctrl.signal
+        ctrl.signal,
       )
 
       let brokerTax = 0
       if (params.hasBroker()) {
         const broker = await gqlFetch<{ calculateMaklerFee: { tax: number } }>(
-          { query: M_BROKER_TAX, variables: { region: params.region(), new_property: params.newProperty() } },
-          ctrl.signal
+          {
+            query: M_BROKER_TAX,
+            variables: { region: params.region(), new_property: params.newProperty() },
+          },
+          ctrl.signal,
         )
         brokerTax = broker.calculateMaklerFee.tax
       }

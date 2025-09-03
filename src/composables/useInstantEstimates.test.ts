@@ -20,21 +20,39 @@ describe('useInstantEstimates', () => {
   describe('notaryCosts calculation', () => {
     it('should return 0 for zero property price', () => {
       propertyPrice.value = 0
-      const { notaryCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { notaryCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(notaryCosts.value).toBe(0)
     })
 
     it('should return base cost for property price at or below €100,000', () => {
       propertyPrice.value = 100000
-      const { notaryCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { notaryCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(notaryCosts.value).toBe(2144)
     })
 
     it('should calculate correctly for property price above €100,000', () => {
       propertyPrice.value = 200000
-      const { notaryCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { notaryCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       // €2,144 + 1.3% of (€200,000 - €100,000) = €2,144 + €1,300 = €3,444
       expect(notaryCosts.value).toBe(3444)
@@ -42,7 +60,13 @@ describe('useInstantEstimates', () => {
 
     it('should handle large property prices correctly', () => {
       propertyPrice.value = 500000
-      const { notaryCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { notaryCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       // €2,144 + 1.3% of (€500,000 - €100,000) = €2,144 + €5,200 = €7,344
       expect(notaryCosts.value).toBe(7344)
@@ -50,7 +74,13 @@ describe('useInstantEstimates', () => {
 
     it('should handle negative property price gracefully', () => {
       propertyPrice.value = -1000
-      const { notaryCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { notaryCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(notaryCosts.value).toBe(0)
     })
@@ -59,14 +89,26 @@ describe('useInstantEstimates', () => {
   describe('stampDuty calculation', () => {
     it('should return 0 for zero property price', () => {
       propertyPrice.value = 0
-      const { stampDuty } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { stampDuty } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(stampDuty.value).toBe(0)
     })
 
     it('should calculate stamp duty with default 6% tax rate', () => {
       propertyPrice.value = 300000
-      const { stampDuty } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { stampDuty } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       // €300,000 × 6% = €18,000
       expect(stampDuty.value).toBe(18000)
@@ -75,7 +117,13 @@ describe('useInstantEstimates', () => {
     it('should calculate stamp duty with custom tax rate', () => {
       propertyPrice.value = 200000
       const customTaxRate = 0.05 // 5%
-      const { stampDuty } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, customTaxRate, brokerRate.value)
+      const { stampDuty } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        customTaxRate,
+        brokerRate.value,
+      )
 
       // €200,000 × 5% = €10,000
       expect(stampDuty.value).toBe(10000)
@@ -84,7 +132,13 @@ describe('useInstantEstimates', () => {
     it('should handle zero tax rate', () => {
       propertyPrice.value = 100000
       const zeroTaxRate = 0
-      const { stampDuty } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, zeroTaxRate, brokerRate.value)
+      const { stampDuty } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        zeroTaxRate,
+        brokerRate.value,
+      )
 
       expect(stampDuty.value).toBe(0)
     })
@@ -94,7 +148,13 @@ describe('useInstantEstimates', () => {
     it('should return 0 when hasBroker is false', () => {
       propertyPrice.value = 300000
       hasBroker.value = false
-      const { brokerCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { brokerCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(brokerCosts.value).toBe(0)
     })
@@ -102,7 +162,13 @@ describe('useInstantEstimates', () => {
     it('should calculate broker costs when hasBroker is true', () => {
       propertyPrice.value = 300000
       hasBroker.value = true
-      const { brokerCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { brokerCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       // €300,000 × 3.2% = €9,600
       expect(brokerCosts.value).toBe(9600)
@@ -112,7 +178,13 @@ describe('useInstantEstimates', () => {
       propertyPrice.value = 250000
       hasBroker.value = true
       const customBrokerRate = 0.04 // 4%
-      const { brokerCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, customBrokerRate)
+      const { brokerCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        customBrokerRate,
+      )
 
       // €250,000 × 4% = €10,000
       expect(brokerCosts.value).toBe(10000)
@@ -121,7 +193,13 @@ describe('useInstantEstimates', () => {
     it('should return 0 for zero property price regardless of hasBroker', () => {
       propertyPrice.value = 0
       hasBroker.value = true
-      const { brokerCosts } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { brokerCosts } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(brokerCosts.value).toBe(0)
     })
@@ -132,7 +210,11 @@ describe('useInstantEstimates', () => {
       propertyPrice.value = 300000
       hasBroker.value = true
       const { totalCost, notaryCosts, stampDuty, brokerCosts } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // Notary: €2,144 + 1.3% of (€300,000 - €100,000) = €2,144 + €2,600 = €4,744
@@ -146,7 +228,13 @@ describe('useInstantEstimates', () => {
     it('should handle zero costs correctly', () => {
       propertyPrice.value = 0
       hasBroker.value = false
-      const { totalCost } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { totalCost } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(totalCost.value).toBe(0)
     })
@@ -158,7 +246,11 @@ describe('useInstantEstimates', () => {
       totalSavings.value = 50000
       hasBroker.value = true
       const { impliedLoan, totalCost } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // Property price + total costs - savings
@@ -170,7 +262,13 @@ describe('useInstantEstimates', () => {
       propertyPrice.value = 200000
       totalSavings.value = 300000 // More than property price + costs
       hasBroker.value = true
-      const { impliedLoan } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { impliedLoan } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(impliedLoan.value).toBe(0)
     })
@@ -180,7 +278,11 @@ describe('useInstantEstimates', () => {
       totalSavings.value = 0
       hasBroker.value = true
       const { impliedLoan, totalCost } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // Property price + total costs - 0 savings
@@ -192,7 +294,11 @@ describe('useInstantEstimates', () => {
       totalSavings.value = -10000 // Negative savings (debt)
       hasBroker.value = true
       const { impliedLoan, totalCost } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // Property price + total costs - (-€10,000) = Property price + total costs + €10,000
@@ -206,7 +312,11 @@ describe('useInstantEstimates', () => {
       totalSavings.value = 50000
       hasBroker.value = true
       const { loanToValue, impliedLoan } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // (Implied loan / Property price) × 100
@@ -217,7 +327,13 @@ describe('useInstantEstimates', () => {
     it('should return 0 for zero property price', () => {
       propertyPrice.value = 0
       totalSavings.value = 0
-      const { loanToValue } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { loanToValue } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(loanToValue.value).toBe(0)
     })
@@ -225,7 +341,13 @@ describe('useInstantEstimates', () => {
     it('should return 0 when implied loan is 0', () => {
       propertyPrice.value = 200000
       totalSavings.value = 300000 // More than property + costs
-      const { loanToValue } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { loanToValue } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       expect(loanToValue.value).toBe(0)
     })
@@ -235,7 +357,13 @@ describe('useInstantEstimates', () => {
       totalSavings.value = 0
       hasBroker.value = false // No broker costs to simplify
       const zeroTaxRate = 0 // No stamp duty to simplify
-      const { loanToValue, impliedLoan, totalCost } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, zeroTaxRate, brokerRate.value)
+      const { loanToValue, impliedLoan, totalCost } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        zeroTaxRate,
+        brokerRate.value,
+      )
 
       // With no stamp duty and no broker costs, but still notary costs
       // Notary costs: €2,144 + 1.3% of (€200,000 - €100,000) = €3,444
@@ -252,7 +380,13 @@ describe('useInstantEstimates', () => {
       // Test the safe() function behavior with string inputs
       propertyPrice.value = '300000' as any
       totalSavings.value = '50000' as any
-      const { impliedLoan } = useInstantEstimates(propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value)
+      const { impliedLoan } = useInstantEstimates(
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
+      )
 
       // Should convert strings to numbers and calculate correctly
       expect(typeof impliedLoan.value).toBe('number')
@@ -264,7 +398,11 @@ describe('useInstantEstimates', () => {
       propertyPrice.value = 0
       totalSavings.value = 0
       const { notaryCosts, stampDuty, brokerCosts, impliedLoan, loanToValue } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // All calculations should return 0 for zero inputs
@@ -280,7 +418,11 @@ describe('useInstantEstimates', () => {
       totalSavings.value = 1000000 // €1M
       hasBroker.value = true
       const { impliedLoan, loanToValue, totalCost } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // With €10M property, costs are: notary (€130,844) + stamp duty (€600,000) + broker (€320,000) = €1,050,844
@@ -294,7 +436,11 @@ describe('useInstantEstimates', () => {
   describe('reactive updates', () => {
     it('should update calculations when property price changes', () => {
       const { notaryCosts, stampDuty, impliedLoan } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // Initial values
@@ -315,7 +461,11 @@ describe('useInstantEstimates', () => {
     it('should update calculations when hasBroker changes', () => {
       propertyPrice.value = 300000
       const { brokerCosts, totalCost, impliedLoan } = useInstantEstimates(
-        propertyPrice, totalSavings, hasBroker, cityTaxRate.value, brokerRate.value
+        propertyPrice,
+        totalSavings,
+        hasBroker,
+        cityTaxRate.value,
+        brokerRate.value,
       )
 
       // With broker

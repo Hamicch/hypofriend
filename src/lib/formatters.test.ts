@@ -43,4 +43,3 @@ describe('formatDisplay', () => {
     expect(s).not.toMatch(/,00/)
   })
 })
-
