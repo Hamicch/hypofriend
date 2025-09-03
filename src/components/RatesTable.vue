@@ -8,26 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { formatDisplay } from '@/composables/useFormatters'
+import { formatDisplay } from '@/lib/formatters'
 import EmptyState from '@/components/EmptyState.vue'
+import type { RatesRow } from '@/types/rates'
 
-interface RateData {
-  fixationLength: string
-  monthlyRate: number
-  interestRate: number
-}
+const props = defineProps<{
+  rows: RatesRow[] | null
+}>()
 
-const ratesData: RateData[] = [
-  { fixationLength: '5 Years', monthlyRate: 568, interestRate: 0.50 },
-  { fixationLength: '10 Years', monthlyRate: 583, interestRate: 0.65 },
-  { fixationLength: '15 Years', monthlyRate: 656, interestRate: 0.98 },
-  { fixationLength: '20 Years', monthlyRate: 718, interestRate: 1.20 },
-  { fixationLength: '25 Years', monthlyRate: 738, interestRate: 1.35 },
-  { fixationLength: '30 Years', monthlyRate: 751, interestRate: 1.41 },
-]
-
-// Sort by interest rate (borrowing rate) in ascending order
-const sortedRates = computed(() => ratesData.sort((a, b) => a.interestRate - b.interestRate))
+const sortedRates = computed(() => props.rows ?? [])
 </script>
 
 <template>
@@ -36,9 +25,7 @@ const sortedRates = computed(() => ratesData.sort((a, b) => a.interestRate - b.i
     <!-- Table header -->
     <TableHeader>
       <TableRow>
-        <TableHead>
-          Fixation length
-        </TableHead>
+        <TableHead> Fixation length </TableHead>
         <TableHead>Monthly rate</TableHead>
         <TableHead>Interest rate</TableHead>
       </TableRow>
@@ -46,12 +33,12 @@ const sortedRates = computed(() => ratesData.sort((a, b) => a.interestRate - b.i
 
     <!-- Table body -->
     <TableBody>
-      <TableRow v-for="rate in sortedRates" :key="rate.fixationLength">
+      <TableRow v-for="rate in sortedRates" :key="rate.yearsFixed">
         <TableCell class="font-medium">
-          {{ rate.fixationLength }}
+          {{ rate.yearsFixed }} Years
         </TableCell>
         <TableCell>{{ formatDisplay(rate.monthlyRate, 'currency') }}</TableCell>
-        <TableCell>{{ formatDisplay(rate.interestRate, 'percentage') }}</TableCell>
+        <TableCell>{{ formatDisplay(rate.borrowingRate, 'percentage') }}</TableCell>
       </TableRow>
     </TableBody>
   </Table>

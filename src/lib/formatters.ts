@@ -1,5 +1,11 @@
 export type DisplayFlag = 'currency' | 'percentage'
 
+/**
+ * Formats a number for display based on the display flag
+ * @param value - The number to format
+ * @param flag - The display flag
+ * @returns Formatted string representation
+ */
 export function formatDisplay(value: number, flag: DisplayFlag): string {
   if (flag === 'currency') {
     return new Intl.NumberFormat('de-DE', {
