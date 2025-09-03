@@ -1,34 +1,41 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { ref as vref } from 'vue'
+import { ref, computed, watch, watchEffect } from 'vue'
 import Card from '@/components/ui/card/Card.vue'
 import InstantResultPanel from '@/components/ResultPanel.vue'
 import { formatDisplay } from '@/lib/formatters'
 import CalculatorForm from '@/components/CalculatorForm.vue'
 import RatesTable from '@/components/RatesTable.vue'
 import { useInstantEstimates } from '@/composables/useInstantEstimates'
+import { ref as vref } from 'vue'
 
 import { useRatesTable } from '@/composables/useRatesTable'
+import { useTaxRates } from '@/composables/useTaxRates'
 
 // Expose the calculator form to the parent
 const calcRef = ref<InstanceType<typeof CalculatorForm> | null>(null)
 
-// constants for now, swap to useTaxRates later
-const cityTaxRate = vref(0.06) // TODO: replace with GraphQL when region is added
-const brokerRate = vref(0.032) // TODO: replace with GraphQL + hasBroker toggle
+const region = () => calcRef.value?.region ?? 'berlin'
+const hasBrokerRef = computed(() => calcRef.value?.hasBroker ?? true)
+const newProperty = () => calcRef.value?.newProperty ?? false
+
+const { tax, loading: taxLoading, error: taxError } = useTaxRates({
+  region,
+  hasBroker: () => hasBrokerRef.value,
+  newProperty,
+})
 
 const { impliedLoan, loanToValue } = useInstantEstimates(
   computed(() => calcRef.value?.propertyPrice ?? 0),
   computed(() => calcRef.value?.totalSavings ?? 0),
   computed(() => calcRef.value?.hasBroker ?? true),
-  cityTaxRate.value,
-  brokerRate.value,
+  computed(() => tax.value.cityTax),
+  computed(() => tax.value.brokerTax),
 )
 
 const impliedLoanFormatted = computed(() => formatDisplay(impliedLoan.value, 'currency'))
 const loanToValueFormatted = computed(() => formatDisplay(loanToValue.value, 'percentage'))
 
-const { rows, loading, error, fetchRates } = useRatesTable()
+const { rows, fetchRates } = useRatesTable()
 
 function onFormSubmit(values: { propertyPrice: number; repayment: number }) {
   fetchRates({
@@ -58,7 +65,7 @@ function onFormSubmit(values: { propertyPrice: number; repayment: number }) {
 
           <Card class="min-h-24 max-w-full lg:col-span-2 flex-1">
             <h3 class="text-md font-semibold">Rates</h3>
-            <RatesTable :rows="rows" :loading="loading" :error="error" />
+            <RatesTable :rows="rows ?? []" />
           </Card>
         </div>
       </section>

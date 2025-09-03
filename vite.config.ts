@@ -9,6 +9,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    'import.meta.env.VITE_ENABLE_MOCKS': JSON.stringify(process.env.VITE_ENABLE_MOCKS || 'true')
+  },
   plugins: [
     vue(),
     vueDevTools(),
