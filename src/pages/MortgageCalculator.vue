@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { ref as vref } from 'vue'
+import { ref, computed, watch, watchEffect } from 'vue'
 import Card from '@/components/ui/card/Card.vue'
 import InstantResultPanel from '@/components/ResultPanel.vue'
 import { formatDisplay } from '@/lib/formatters'
 import CalculatorForm from '@/components/CalculatorForm.vue'
 import RatesTable from '@/components/RatesTable.vue'
 import { useInstantEstimates } from '@/composables/useInstantEstimates'
+import { ref as vref } from 'vue'
 
 import { useRatesTable } from '@/composables/useRatesTable'
 import { useTaxRates } from '@/composables/useTaxRates'
@@ -14,11 +14,11 @@ import { useTaxRates } from '@/composables/useTaxRates'
 // Expose the calculator form to the parent
 const calcRef = ref<InstanceType<typeof CalculatorForm> | null>(null)
 
-const region = () => calcRef.value?.region ?? 'Berlin'
+const region = () => calcRef.value?.region ?? 'berlin'
 const hasBrokerRef = computed(() => calcRef.value?.hasBroker ?? true)
 const newProperty = () => calcRef.value?.newProperty ?? false
 
-const { tax } = useTaxRates({
+const { tax, loading: taxLoading, error: taxError } = useTaxRates({
   region,
   hasBroker: () => hasBrokerRef.value,
   newProperty,

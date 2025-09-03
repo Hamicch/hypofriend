@@ -22,15 +22,15 @@ export const handlers = [
       })
     }
     if (query.includes('calculateCityTax')) {
-      const reg = body?.variables?.region ?? 'Berlin'
+      const reg = body?.variables?.region ?? 'berlin'
       const map: Record<string, number> = {
-        Berlin: 0.06,
-        Bavaria: 0.035,
-        Brandenburg: 0.065,
-        Hamburg: 0.045,
-        Saxony: 0.035,
-        'Baden-Württemberg': 0.05,
-        Hesse: 0.06,
+        berlin: 0.06,
+        bavaria: 0.05,
+        brandenburg: 0.065,
+        hamburg: 0.045,
+        saxony: 0.07,
+        'baden-wurttemberg': 0.08,
+        hesse: 0.02,
       }
       return HttpResponse.json({ data: { calculateCityTax: { tax: map[reg] ?? 0.06 } } })
     }
