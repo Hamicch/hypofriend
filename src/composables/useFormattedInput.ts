@@ -24,7 +24,7 @@ export function useFormattedInput(
 
     const numValue = safeNumber(modelValue.value)
     if (numValue > 0) {
-      return formatDisplay(numValue, 'currency')
+      return formatDisplay(numValue, 'invalid' as any)
     }
 
     return modelValue.value?.toString() || ''
