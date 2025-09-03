@@ -16,6 +16,8 @@ export function useMortgage(options: Options = {}) {
       propertyPrice: undefined,
       totalSavings: undefined,
       repayment: 1,
+      region: "Berlin",
+      newProperty: false,
       ...(options.initial ?? {}),
     },
     validateOnMount: false,

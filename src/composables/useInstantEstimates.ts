@@ -1,5 +1,6 @@
-import { computed, type Ref } from 'vue'
+import { computed, unref, type Ref } from 'vue'
 
+type MaybeRef<T> = T | Ref<T>
 /**
  * Safely converts unknown values to numbers
  * Handles both numeric and string inputs, returning 0 for invalid values
@@ -23,8 +24,8 @@ export function useInstantEstimates(
   propertyPrice: Ref<number>,
   totalSavings: Ref<number>,
   hasBroker: Ref<boolean>,
-  cityTaxRate = 0.06, // TODO: Replace with GraphQL when region is added
-  brokerRate = 0.032, // TODO: Replace with GraphQL + hasBroker toggle
+  cityTaxRate: MaybeRef<number> = 0.06, // TODO: Replace with GraphQL when region is added
+  brokerRate: MaybeRef<number> = 0.032, // TODO: Replace with GraphQL + hasBroker toggle
 ) {
   /**
    * Calculates notary costs based on property price
@@ -41,7 +42,7 @@ export function useInstantEstimates(
    */
   const stampDuty = computed(() => {
     const price = safe(propertyPrice.value)
-    return price * cityTaxRate
+    return price * safe(unref(cityTaxRate))
   })
 
   /**
@@ -50,7 +51,7 @@ export function useInstantEstimates(
    */
   const brokerCosts = computed(() => {
     const price = safe(propertyPrice.value)
-    return hasBroker.value ? price * brokerRate : 0
+    return hasBroker.value ? price * safe(unref(brokerRate)) : 0
   })
 
   /**

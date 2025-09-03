@@ -13,6 +13,7 @@ interface Props {
   id?: string
   type?: string
   formatOnBlur?: boolean
+  placeholder?: string
 }
 
 const props = defineProps<Props>()
@@ -51,16 +52,8 @@ const inputClasses = computed(() =>
 
 <template>
   <div class="relative w-full items-center">
-    <input
-      :id="id"
-      :type="type"
-      :value="displayValue"
-      @input="handleInput"
-      @focus="handleFocus"
-      @blur="handleBlur"
-      data-slot="formatted-input"
-      :class="inputClasses"
-    />
+    <input :id="id" :type="type" :value="displayValue" @input="handleInput" @focus="handleFocus" @blur="handleBlur"
+      data-slot="formatted-input" :class="inputClasses" :placeholder="placeholder" />
     <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
       <Euro class="size-4 text-muted-foreground" />
     </span>

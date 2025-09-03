@@ -14,11 +14,24 @@ const requiredNumberWithLimits = (label: string, min: number, max: number) =>
     .max(max, `Max ${max.toLocaleString()}`)
     .refine((n) => Number.isFinite(n), { message: `${label} is required` })
 
+export const REGIONS = [
+  "Berlin",
+  "Bavaria",
+  "Brandenburg",
+  "Hamburg",
+  "Saxony",
+  "Baden-Württemberg",
+  "Hesse",
+] as const;
+export type Region = typeof REGIONS[number];
+
 export const mortgageFormSchema = z.object({
   realEstateCommission: z.boolean(),
   propertyPrice: requiredNumber('Property price'),
   totalSavings: requiredNumber('Total savings'),
   repayment: requiredNumberWithLimits('Repayment', 1, 100),
+  region: z.enum(REGIONS, { required_error: "Region is required" }),
+  newProperty: z.boolean({ required_error: "New property selection is required" })
 })
 
 export type MortgageFormValues = z.infer<typeof mortgageFormSchema>
